@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"><suite name="All Test Suite"><test verbose="2" preserve-order="true" name="/home/tigran_a/IdeaProjects/ProjectMatrixAutomation"><classes><class name="package1.TestCase1"><methods><include name="test1"/></methods></class><class name="package1.TestCase2"><methods><include name="test1"/></methods></class></classes></test></suite>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="/home/tigran_a/IdeaProjects/ProjectMatrixAutomation">
+        <classes>
+            <class name="LoginPageTest"/>
+        </classes>
+    </test>
+</suite>
