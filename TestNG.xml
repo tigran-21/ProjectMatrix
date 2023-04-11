@@ -4,6 +4,7 @@
     <test verbose="2" preserve-order="true" name="/home/tigran_a/IdeaProjects/ProjectMatrixAutomation">
         <classes>
             <class name="LoginPageTest"/>
+            <class name="LoginPageObjectsFunctionalityTest"/>
         </classes>
     </test>
 </suite>
