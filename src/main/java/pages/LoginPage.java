@@ -7,7 +7,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
+
+import static constants.Constant.*;
 
 public class LoginPage {
     public LoginPage(WebDriver driver) {
@@ -42,7 +43,7 @@ public class LoginPage {
     }
 
     public void waitForErrorMessage() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(constant.WAIT_DURATION));
+        WebDriverWait wait = new WebDriverWait(driver, WAIT_DURATION);
         wait.until(ExpectedConditions.visibilityOfElementLocated(invalidCredentials));
     }
 
@@ -51,7 +52,7 @@ public class LoginPage {
     }
 
     public void waitForLogin() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(constant.WAIT_DURATION));
+        WebDriverWait wait = new WebDriverWait(driver, WAIT_DURATION);
         wait.until(ExpectedConditions.visibilityOfElementLocated(submittedPage.mainTitle));
     }
 

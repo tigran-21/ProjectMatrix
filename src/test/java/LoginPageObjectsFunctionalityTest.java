@@ -4,9 +4,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pages.LoginPage;
 import pages.LoginPageObjects;
 import pages.SubmittedPage;
@@ -14,6 +12,9 @@ import pages.SubmittedPage;
 public class LoginPageObjectsFunctionalityTest {
 
     private static WebDriver driver = null;
+    private LoginPageObjects loginPageObjects;
+    Constant constant = new Constant();
+
 
     @BeforeTest
     public void setUpTest() {
@@ -22,16 +23,14 @@ public class LoginPageObjectsFunctionalityTest {
 
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        driver.get("https://projectmatrix.instigatemobile.com/login");
+        driver.get(constant.LOGIN_URL);
+
+        loginPageObjects = new LoginPageObjects(driver);
     }
 
     @Test(priority = 1, description = "Verify eye icon functionality")
     public void EyeIconFunctionalityTest() {
-        LoginPageObjects loginPageObjects = new LoginPageObjects(driver);
-
         String actualEyeIconState = loginPageObjects.getEyeIconState();
-
-
         if (actualEyeIconState.equals("eye")) {
             loginPageObjects.clickEyeIcon();
             Assert.assertEquals("eye-invisible", loginPageObjects.getEyeIconState(),
@@ -41,7 +40,6 @@ public class LoginPageObjectsFunctionalityTest {
             Assert.assertEquals("eye", loginPageObjects.getEyeIconState(),
                     "Eye icon did not toggle password visibility");
         }
-
     }
 
     @Test(priority = 2, description = "Verify that the checkbox can be selected and deselected.")
@@ -54,7 +52,7 @@ public class LoginPageObjectsFunctionalityTest {
 
         // Verify initial state
         currentValue = checkBox.getAttribute("class");
-        expectedValue= "ant-checkbox";
+        expectedValue = "ant-checkbox";
         Assert.assertEquals(expectedValue, currentValue, "Checkbox initial state is incorrect.");
 
         // Verify checkbox can be selected
@@ -66,18 +64,19 @@ public class LoginPageObjectsFunctionalityTest {
         // Verify checkbox can be deselected
         checkBox.click();
         currentValue = checkBox.getAttribute("class");
-        expectedValue= "ant-checkbox";
+        expectedValue = "ant-checkbox";
         Assert.assertEquals(expectedValue, currentValue, "Checkbox was not deselected.");
     }
 
 
-    @Test(priority = 3, description = "verify \"Forgot Password?\" link functionality")
+    @Test(priority = 3, description = "Verify \"Forgot Password?\" link functionality")
     public void forgotPasswordLinkTest() {
         LoginPageObjects loginPageObjects = new LoginPageObjects(driver);
 
+
         loginPageObjects.clickForgotPasswordLink();
         String currentURL = driver.getCurrentUrl();
-        String expectedURL = "https://passwd.instigatemobile.com/";
+        String expectedURL = constant.PASSWORD_RESTORE_URL;
         Assert.assertEquals(expectedURL, currentURL, "\"Forgot your password?\" link is not working correct");
     }
 

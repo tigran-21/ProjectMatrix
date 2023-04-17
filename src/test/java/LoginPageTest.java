@@ -1,37 +1,57 @@
-import java.util.Scanner;
-
+import Helper.CreateUser;
+import Trial.RunTest;
 import constants.Constant;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pages.LoginPage;
-import pages.SubmittedPage;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginPageTest {
     WebDriver driver = null;
 
+    static String[] userCredentials = CreateUser.createUser();
+//    static String username = null;
+//    static String password = null;
     static String username = System.getProperty("username");
     static String password = System.getProperty("password");
-    @BeforeTest
+
+    @BeforeMethod
     public void setUpTest() {
+
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
-
+        Constant constant = new Constant();
 
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        driver.get("https://projectmatrix.instigatemobile.com/login");
+        driver.get(constant.LOGIN_URL);
+
+
+        try {
+            // Use the username and password variables for authentication
+            if (username == null) {  // Get username from ".user.json" file
+                username = userCredentials[0];
+                System.out.println(username);
+            }
+            if (password == null) {  // Get password from ".user.json" file
+                password = userCredentials[1];
+                System.out.println(password);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test(priority = 1, description = "Verify the user is unable to login with a valid username and invalid password.")
     public void InvalidPasswordTest() {
 
-        driver.navigate().refresh();
         LoginPage loginPage = new LoginPage(driver);
 
         loginPage.setUserLogin(username);
@@ -43,13 +63,11 @@ public class LoginPageTest {
         String expectedErrorMessage = "Invalid username or password, please verify them and retry";
 
         Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "Something went wrong");
-
     }
 
     @Test(priority = 2, description = "Verify the user is unable to login with a invalid username and and valid password.")
     public void InvalidUsernameTest() {
 
-        driver.navigate().refresh();
         LoginPage loginPage = new LoginPage(driver);
 
         loginPage.setUserLogin("username");
@@ -66,7 +84,6 @@ public class LoginPageTest {
     @Test(priority = 3, description = "Verify that the user can log on with a valid username and valid password.")
     public void LoginTest() {
 
-        driver.navigate().refresh();
         LoginPage loginPage = new LoginPage(driver);
 
         loginPage.setUserLogin(username);
@@ -74,15 +91,18 @@ public class LoginPageTest {
         loginPage.clickSignInButton();
         loginPage.waitForLogin();
 
+
+        Constant constant = new Constant();
+
         String actualURL = driver.getCurrentUrl();
-        String expectedURL = "https://projectmatrix.instigatemobile.com/timesheet/allEfforts/submitted";
+        String expectedURL = constant.SUBMITTED_URL;
 
         Assert.assertEquals(actualURL, expectedURL, "The user is not logged in.");
     }
 
+    @AfterMethod
+    public void tearDownTest() throws IOException, NoSuchMethodException {
 
-    @AfterTest
-    public void tearDownTest() {
         if (driver != null) {
             driver.quit();
             System.out.println("Test completed successfully");

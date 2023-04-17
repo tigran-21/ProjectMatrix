@@ -5,6 +5,7 @@
         <classes>
             <class name="LoginPageTest"/>
             <class name="LoginPageObjectsFunctionalityTest"/>
+<!--            <class name="SimpleRun"></class>-->
         </classes>
     </test>
 </suite>
